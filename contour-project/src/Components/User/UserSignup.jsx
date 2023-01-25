@@ -24,12 +24,18 @@ const UserSignup = () => {
           const response = await axiosUserInstance
             .post("/signup", values)
             .then((response) => {
-              if (response.data.status === "user") {
-                setValidation(response.data.data);
+              console.log(response);
+              if (response.data.status === "registered") {
+                setValidation(response.data.msg);
                 action.resetForm();
-              } else {
-                navigate("/login");
               }
+              if (response.data.status === "Existing") {
+                setValidation(response.data.msg);
+                action.resetForm();
+              } 
+              // else {
+              //   navigate("/login");
+              // }
             });
         } catch (err) {
           console.log(err.message);

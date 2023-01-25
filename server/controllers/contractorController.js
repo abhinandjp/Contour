@@ -1,4 +1,4 @@
-const contractorHelpers = require('../Helpers/contractorHelpers')
+const contractorHelpers = require("../Helpers/contractorHelpers");
 
 const contractorSignup = (req, res) => {
   let contractorDetails = req.body;
@@ -21,34 +21,76 @@ const contractorLogin = (req, res) => {
     } else if (validate.invalidContractor) {
       let invalidContractor = "Invalid Contractor";
       res.json({ status: "noContractor", data: invalidContractor });
-    }else if(validate.passFalse){
-      let inctPassword = "Incorrect Password"
-      
-      res.json({status : "inctPassword" , data : inctPassword})
+    } else if (validate.blkdTrue) {
+      let adminBlocked = "Blocked By Admin";
+      res.json({ status: "noContractor", data: adminBlocked });
+    } else if (validate.passFalse) {
+      let inctPassword = "Incorrect Password";
+
+      res.json({ status: "inctPassword", data: inctPassword });
     }
   });
 };
-      
-const addDesigns = (req,res) =>{
-  let designs = req.body
-  // console.log(designs);
- contractorHelpers.addDesign(designs).then((response)=>{
-  result = "New Design Added"
-  res.json({status:"Design Added", data : result})
- })
-};
 
-const design = (req,res)=>{
+const contractor = (req,res)=>{
+  let {user} = req.body
   
-  contractorHelpers.designs().then((response)=>{
-    
+  contractorHelpers.contractor(user).then((response)=>{
     res.json(response)
   })
 }
+
+const editProfile = (req,res)=>{
+  let data = req.body
+  contractorHelpers.edit(data).then((response)=>{
+    // console.log(response);
+    res.json(response)
+  })
+}
+
+const design = (req, res) => {
+  contractorHelpers.designs().then((response) => {
+    
+    res.json(response);
+  });
+};
+
+const addDesigns = (req, res) => {
+  let designs = req.body;
+  // console.log(designs);
+  contractorHelpers.addDesign(designs).then((response) => {
+    result = "New Design Added";
+    res.json({ status: "Design Added", data: result });
+  });
+};
+
+const editDesign = (req,res)=>{
+
+  let editDesign = req.body
+  // console.log(editDesign);
+  contractorHelpers.editDesign(editDesign).then((response)=>{
+    res.json(response)
+  })
+
+}
+
+
+
+const deleteDesign = (req, res) => {
+  let { id } = req.body;
+
+  contractorHelpers.delete(id).then((response)=>{
+    res.json(response);
+  })
+};
 
 module.exports = {
   contractorSignup,
   contractorLogin,
   addDesigns,
-  design
+  design,
+  deleteDesign,
+  editDesign ,
+  contractor,
+  editProfile
 };

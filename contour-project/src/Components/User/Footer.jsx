@@ -1,6 +1,12 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
+import { userToken } from "../../Redux/authSlice";
 function Footer() {
+
+  const ctoken = useSelector((state)=>state.authSlice.userToken)
+
+    console.log("tokennnn",ctoken);
+
   return (
     <div>
       <footer className="bg-slate-500 text-center  lg:pl-40 mt-10 ">

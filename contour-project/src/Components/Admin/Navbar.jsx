@@ -72,10 +72,10 @@ function Navbar() {
                   <Link to="/adminUser">User</Link>
                 </li>
                 <li className="text-gray-500 hover:text-blue-600">
-                  <Link to="/services">Contractor</Link>
+                  <Link to="/adminContractor">Contractor</Link>
                 </li>
                 <li className="text-gray-500 hover:text-blue-600">
-                  <Link to="/designs">Designs</Link>
+                  <Link to="/adminDesigns">Designs</Link>
                 </li>
                 <li className="text-gray-500 hover:text-blue-600">
                   <a href="javascript:void(0)">About US</a>

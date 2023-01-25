@@ -1,63 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { axiosContractorInstance } from "../../Instance/Axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { axiosUserInstance } from "../../Instance/Axios";
 
+import { useLocation ,useNavigate } from 'react-router-dom';
 import {
-  cDesign,
-  cCrane,
-  cKLH1,
-  cKLH2,
-  cKLH3,
-  cKLH4,
-  cKLH5,
-} from "../../assets/User/Exports";
-function Designs() {
-  const [designs, setDesigns] = useState([]);
-  const token = localStorage.getItem("user");
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  
+  cKLH1
  
+} from "../../assets/User/Exports";
 
-  useEffect(() => {
-    const fetchDesigns = async () => {
-      const response = await axiosContractorInstance
-        .get("/contractorDesigns")
+function SpecificContractor() {
 
-        .then((response) => {
-          setLoading(false);
+  const [designs, setDesigns] = useState([])
+  const token = localStorage.getItem("user");
 
-          let res = response.data;
-          setDesigns(res);
-        });
-    };
-    fetchDesigns();
-  }, []);
 
-  const handleClick = (id) => {
-    navigate("/viewDesigns", { state: id });
+  let location = useLocation();
+  const navigate = useNavigate();
+
+
+// console.log(location.state);
+
+
+useEffect(() => {
+  let profileId = location.state
+  const fetchProfile = async () => {   
+    
+    const response = await axiosUserInstance
+      .post("/getSpecificContractorD",{user : profileId})
+      
+      .then((response) => {
+        // console.log(response.data);
+        setDesigns(response.data)
+       
+      }).catch((err)=>{
+        console.log(err);
+      })
   };
+  fetchProfile();
+}, []);
 
+const handleClick = (id) => {
+  navigate("/viewDesigns", { state: id });
+};
+// console.log("desiu",designs);
   return (
     <div>
-      <div className="relative">
-        <img className="w-[100%] h-[88vh] " src={cDesign} alt="" />
-
-        <h1 className="absolute text-center text-2xl text-black bottom-4 left-1/2 -translate-x-1/2 pb-10 w-full pt-8 bg-blue-600/[.55] font-semibold italic">
-          We transform your homes from vision to reality
-        </h1>
-      </div>
-      {loading && (
-        <div className="flex justify-center items-center pt-5">
-          <div
-            className="spinner-grow inline-block w-8 h-8 bg-current rounded-full opacity-0 text-red-500"
-            role="status"
-          >
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
-
       {designs.map((element) => (
         <div className="flex items-center min-h mt-16 " key={element._id}>
           <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
@@ -83,7 +70,7 @@ function Designs() {
                     ))}
                   </ul>
 
-                  
+                  {token ? (
                     <button
                       className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-6 ml-24"
                       onClick={() => {
@@ -92,11 +79,11 @@ function Designs() {
                     >
                       View Designs
                     </button>
-                  
-                    {/* <button className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-6 ml-24">
+                  ) : (
+                    <button className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-6 ml-24">
                       <Link to="/login">View Designs</Link>
-                    </button> */}
-                 
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -104,7 +91,7 @@ function Designs() {
         </div>
       ))}
     </div>
-  );
+  )
 }
 
-export default Designs;
+export default SpecificContractor

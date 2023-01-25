@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { clogo } from "../../assets/User/Exports";
 import { useNavigate, Link } from "react-router-dom";
+import { clearContractorToken , clearcontractorAllDetails } from "../../Redux/authSlice";
+import { useDispatch } from "react-redux";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
   const token = localStorage.getItem("contractor");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
 
   function logout() {
     localStorage.removeItem("contractor");
+    dispatch(clearContractorToken())
+    dispatch(clearcontractorAllDetails())
+
     navigate("/contractorHome");
   }
 
@@ -76,7 +83,8 @@ function Navbar() {
                   <Link to="/contractorDesigns">Designs</Link>
                 </li>
                 <li className="text-gray-600 hover:text-blue-600">
-                  <a href="javascript:void(0)">About US</a>
+                <Link to="/about">About Me</Link>
+                  
                 </li>
                 {token ? (
                   <li

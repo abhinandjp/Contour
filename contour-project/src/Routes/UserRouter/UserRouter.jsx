@@ -7,6 +7,12 @@ import Home from "../../Pages/User/HomePage";
 import Services from "../../Pages/User/ServicesPage";
 import Designs from "../../Pages/User/DesignPage";
 import Viewdesigns from "../../Pages/User/Viewdesigns";
+import ActivationPage from "../../Pages/User/ActivationPage";
+import Contractor from "../../Pages/User/ContactContractor";
+import SpecificContractor from "../../Pages/User/Specific";
+import ErrorPage from "../../Components/User/ErrorPage";
+import ProtectRoute from "./ProtectRoute";
+
 
 function UserRouter() {
   return (
@@ -14,21 +20,33 @@ function UserRouter() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<UserLogin />} />
-        </Routes>
-        <Routes>
+        
           <Route path="/signup" element={<UserSignup />} />
-        </Routes>
-        <Routes>
+        
           <Route path="/" element={<Home />} />
-        </Routes>
-        <Routes>
+        
           <Route path="/services" element={<Services />} />
-        </Routes>
-        <Routes>
+       
           <Route path="/designs" element={<Designs />} />
-        </Routes>
-        <Routes>
+        
+          <Route exact path="/user/activation/:activation_token" element={<ActivationPage />} />
+        
           <Route path="/viewDesigns" element={<Viewdesigns/>} />
+
+          <Route element={<ProtectRoute/>}>
+
+          <Route path="/contactContractor" element={<Contractor/>} />
+
+          <Route path="/specificContractor" element={<SpecificContractor/>} />
+          
+          </Route>
+
+          {/* <Route path="*" element={<ErrorPage/>} /> */}
+
+
+
+
+
         </Routes>
       </BrowserRouter>
     </div>

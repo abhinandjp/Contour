@@ -4,6 +4,10 @@ const Schema = mongoose.Schema;
 
 const designSchema = new Schema(
     {
+      email : {
+        type : String,
+        required : true
+      },
       designName: {
         type: String,
         required: true,

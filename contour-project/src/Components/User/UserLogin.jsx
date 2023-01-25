@@ -4,7 +4,10 @@ import { useFormik } from "formik";
 import { useNavigate , Link } from "react-router-dom";
 import { UserLoginSchema } from "../../Schemas/UserLoginSchema";
 import { clogo } from "../../assets/User/Exports";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { userToken } from "../../Redux/authSlice";
+
+
 
 const initialValues = {
   email: "",
@@ -14,6 +17,7 @@ const initialValues = {
 const UserLogin = () => {
   const [validation, setValidation] = useState("");
   let navigate = useNavigate();
+  const dispatch = useDispatch()
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -32,8 +36,14 @@ const UserLogin = () => {
                 setValidation(response.data.data);
 
                 action.resetForm();
+              }else if (response.data.status === "blocked") {
+                setValidation(response.data.data);
+
+                action.resetForm();
               } else {
-                localStorage.setItem("token", response.data.user);
+                localStorage.setItem("user", response.data.user);
+                let token = response.data.user
+                dispatch(userToken(token))
                 navigate("/");
               }
             });

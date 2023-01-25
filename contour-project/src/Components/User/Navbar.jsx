@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { clogo } from "../../assets/User/Exports";
 import { useNavigate, Link } from "react-router-dom";
+import { clearUserToken } from "../../Redux/authSlice";
+import { useDispatch } from "react-redux";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("user");
   
-
+  const dispatch = useDispatch()
   const navigate = useNavigate();
 
   function logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(clearUserToken())
     navigate("/");
   }
 

@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { useNavigate , Link } from "react-router-dom";
 import { ContractorLoginSchema } from "../../Schemas/ContractorLogin";
 import { clogo } from "../../assets/User/Exports";
+import { useDispatch } from "react-redux";
+import { contractorToken } from "../../Redux/authSlice";
 
 const initialValues = {
   email: "",
@@ -13,6 +15,8 @@ const initialValues = {
 function Login() {
   const [validation, setValidation] = useState("");
   let navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -29,7 +33,12 @@ function Login() {
                 setValidation(response.data.data);
                 action.resetForm();
               } else {
+                
                 localStorage.setItem("contractor", response.data.contractor);
+                let contToken = response.data.contractor
+                console.log("Nagesh",contToken);
+                dispatch(contractorToken(contToken))
+
                 navigate("/contractorHome");
               }
             });

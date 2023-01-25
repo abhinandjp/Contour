@@ -6,6 +6,14 @@ import Login from "../../Pages/Contractor/LoginPage";
 import Home from "../../Pages/Contractor/HomePage";
 import Designs from "../../Pages/Contractor/DesignPage";
 import AddDesigns from "../../Components/Contractor/AddDesigns";
+import EditDesigns from "../../Components/Contractor/EditDesigns";
+import ProfileEdit from "../../Components/Contractor/ProfileEdit";
+import AboutPage from "../../Pages/Contractor/AboutPage";
+import ProtectRoute from "./ProtectRoute";
+
+// import ErrorPage from "../../Components/Contractor/ErrorPage";
+
+
 
 function ContractorRouter() {
   return (
@@ -13,18 +21,30 @@ function ContractorRouter() {
       <BrowserRouter>
         <Routes>
           <Route path="/contractorSignup" element={<Signup />} />
-        </Routes>
-        <Routes>
+        
           <Route path="/contractorLogin" element={<Login />} />
-        </Routes>
-        <Routes>
+
+          <Route element={<ProtectRoute/>}>
+
+        
           <Route path="/contractorHome" element={<Home />} />
-        </Routes>
-        <Routes>
+       
           <Route path="/contractorDesigns" element={< Designs />} />
-        </Routes>
-        <Routes>
+        
           <Route path="/addDesigns" element={< AddDesigns />} />
+
+          <Route path="/editDesigns" element={< EditDesigns />} />
+
+          <Route path="/editProfile" element={< ProfileEdit />} />
+
+          <Route path="/about" element={< AboutPage />} />
+
+          </Route>
+
+
+          {/* <Route path="*" element={< ErrorPage />} /> */}
+
+
         </Routes>
       </BrowserRouter>
     </div>
