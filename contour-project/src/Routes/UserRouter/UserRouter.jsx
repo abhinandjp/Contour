@@ -12,6 +12,10 @@ import Contractor from "../../Pages/User/ContactContractor";
 import SpecificContractor from "../../Pages/User/Specific";
 import ErrorPage from "../../Components/User/ErrorPage";
 import ProtectRoute from "./ProtectRoute";
+import Checkout from "../../Pages/User/Checkout";
+import ProfilePage from "../../Pages/User/ProfilePage";
+import ProfileEditPage from "../../Pages/User/ProfileEditPage";
+import WishlistPage from "../../Pages/User/WishlistPage";
 
 
 function UserRouter() {
@@ -31,11 +35,22 @@ function UserRouter() {
         
           <Route exact path="/user/activation/:activation_token" element={<ActivationPage />} />
         
-          <Route path="/viewDesigns" element={<Viewdesigns/>} />
+
 
           <Route element={<ProtectRoute/>}>
 
+          <Route path="/viewDesigns" element={<Viewdesigns/>} />
+
+          <Route path="/wishlist" element={<WishlistPage/>} />
+
+
+          <Route path="/profile" element={<ProfilePage/>} />  
+
+          <Route path="/profileEdit" element={<ProfileEditPage/>} />         
+
           <Route path="/contactContractor" element={<Contractor/>} />
+
+          <Route path="/checkout-success" element={<Checkout/>} />
 
           <Route path="/specificContractor" element={<SpecificContractor/>} />
           

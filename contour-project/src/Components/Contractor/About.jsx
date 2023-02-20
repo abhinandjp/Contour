@@ -26,7 +26,7 @@ function About() {
       <div class="w-full md:w-1/2">
         {/* <img class="w-32 h-32 rounded-full mx-auto mb-6" src="profile-pic.jpg" alt="Profile Picture"> */}
         <h1 class="text-2xl font-medium mb-2">I'm {cont.name}</h1>
-        <p class="text-gray-700 mb-6">Web Developer</p>
+        <p class="text-gray-700 mb-6">Contractor</p>
         <p class="text-gray-700 mb-6">{cont.about}</p>
         {/* <div class="flex">
           <a href="#" class="bg-blue-500 text-white py-2 px-4 rounded-full mr-4">Download CV</a>

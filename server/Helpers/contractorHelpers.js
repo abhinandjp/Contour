@@ -2,6 +2,7 @@ const contractorModel = require("../Models/contractorModel/contractorSchema");
 const designModel = require("../Models/contractorModel/designSchema");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt')
+require("dotenv").config();
 
 
 module.exports = {
@@ -60,7 +61,8 @@ module.exports = {
               user: contractorLogin.name,
               email: contractorLogin.email,
             },
-            "secret123"
+            // "secret123"
+            process.env.JWT_SECRET_KEY
           );
           // console.log(token);
           validation.contractorTrue = true;
@@ -86,7 +88,7 @@ module.exports = {
 
  edit : (data)=>{
   let validation = { editSuccess : false}
-  console.log(data);
+  // console.log(data);
   let {name, email ,phone , address, state, city, zip,  about , image  } = data
   // console.log(phone);
   return new Promise(async(resolve,reject)=>{
@@ -114,8 +116,8 @@ module.exports = {
 
   addDesign: (designs) => {
     let validation = { designTrue: false };
-    const { inp, array , email } = designs;
-    console.log(email);
+    const { inp, array , email , bImage , bImage1 , bImage2 } = designs;
+    console.log(bImage,bImage1,bImage2);
 
     const values = [];
     array.forEach((element) => {
@@ -131,6 +133,10 @@ module.exports = {
           designName: inp.designType,
           description: values,
           cost: inp.cost,
+          image1 : bImage ,
+          image2 : bImage1,
+          image3 : bImage2
+
         });
         saveData.save().then((res) => {
           console.log("new Design Added");

@@ -33,8 +33,8 @@ const contractorLogin = (req, res) => {
 };
 
 const contractor = (req,res)=>{
-  let {user} = req.body
-  
+  // let {user} = req.body
+  user = req.contractor.email
   contractorHelpers.contractor(user).then((response)=>{
     res.json(response)
   })

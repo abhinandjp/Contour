@@ -29,6 +29,8 @@ function EditDesigns() {
   const [image,setImage] = useState('')
   const [designName,setdesignName] = useState(updatedData.designName )
   const [cost,setCost] = useState( updatedData.cost )
+  const user = localStorage.getItem("user");
+
 
 
 
@@ -81,7 +83,7 @@ function EditDesigns() {
         description: arr,
         id : designId
       };
-      console.log("form data",formData);
+      // console.log("form data",formData);
       const response = await axiosContractorInstance
         .patch("/editDesign", formData)
         .then(() => {

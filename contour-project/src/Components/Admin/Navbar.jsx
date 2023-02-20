@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { clogo } from "../../assets/User/Exports";
 import { useNavigate, Link } from "react-router-dom";
+import { clearAdminToken  } from "../../Redux/authSlice";
+import { useDispatch } from "react-redux";
+
+
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
   const token = localStorage.getItem("admin");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
 
   function logout() {
     localStorage.removeItem("admin");
+    dispatch(clearAdminToken())
+
     navigate("/adminLogin");
   }
 
@@ -68,18 +76,24 @@ function Navbar() {
               }`}
             >
               <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+              <li className="text-gray-500 hover:text-blue-600">
+                  <Link to="/adminDashboard">Dashboard</Link>
+                </li>
                 <li className="text-gray-500 hover:text-blue-600">
                   <Link to="/adminUser">User</Link>
                 </li>
                 <li className="text-gray-500 hover:text-blue-600">
+                  
+                  <Link to="/subscription">Subscription</Link>
+
+                </li>
+                <li className="text-gray-500 hover:text-blue-600">
                   <Link to="/adminContractor">Contractor</Link>
                 </li>
-                <li className="text-gray-500 hover:text-blue-600">
+                {/* <li className="text-gray-500 hover:text-blue-600">
                   <Link to="/adminDesigns">Designs</Link>
-                </li>
-                <li className="text-gray-500 hover:text-blue-600">
-                  <a href="javascript:void(0)">About US</a>
-                </li>
+                </li> */}
+              
                 {token ? (
                   <li
                     className="text-gray-500 hover:text-blue-600 cursor-pointer"
@@ -89,7 +103,7 @@ function Navbar() {
                   </li>
                 ) : (
                   <li className="text-gray-600 hover:text-blue-600">
-                    <Link to="/contractorLogin">Login</Link>
+                    <Link to="/adminLogin">Login</Link>
                   </li>
                 )}
               </ul>

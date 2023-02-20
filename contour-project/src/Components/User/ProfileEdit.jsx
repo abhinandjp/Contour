@@ -1,34 +1,40 @@
-import React, { useState } from "react";
-import Navbar from "./Navbar";
-import Axioss from "axios";
-
+import React, { useState } from 'react'
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { axiosContractorInstance } from "../../Instance/Axios";
+import {axiosUserInstance} from '../../Instance/Axios'
+import Axioss from "axios";
+
+
 
 function ProfileEdit() {
   const location = useLocation();
-  let cont = location.state;
-  // console.log("contractor", cont);
 
-  let [name, setName] = useState(cont.name || "");
-  let [email, setEmail] = useState(cont.email || "");
-  let [address, setAddress] = useState(cont.address || "");
-  let [city, setCity] = useState(cont.city || "");
-  let [state, setState] = useState(cont.state || "");
-  let [zip, setZip] = useState(cont.zipCode || "");
-  let [about, setAbout] = useState(cont.about || "");
-  let [phone, setPhone] = useState(cont.phoneNumber || "");
-  let [result, setResult] = useState("");
-  const [image, setImage] = useState("");
+  let use = location.state;
+//  console.log(use,"haii vannuu");
+
+let [name, setName] = useState(use.name || "");
+let [email, setEmail] = useState(use.email || "");
+  let [address, setAddress] = useState(use.address || "");
+  let [city, setCity] = useState(use.city || "");
+  let [state, setState] = useState(use.state || "");
+  let [zip, setZip] = useState(use.zipCode || "");
+  let [phone, setPhone] = useState(use.phoneNumber || "");
   const [insertImage, setinsertImage] = useState("");
+  const [image, setImage] = useState("");
+  let [result, setResult] = useState("");
+
+
   let [loading, setLoading] = useState(false);
-  const user = localStorage.getItem("contractor");
+  const user = localStorage.getItem("user");
 
 
-  // console.log(insertImage);
-
-  const { register, handleSubmit, reset } = useForm();
+  const config = {
+    headers: {
+        Accept: 'application/json',
+        Authorization: user,
+        'Content-Type': 'application/json'
+    }
+};
 
   const uploadImage = () => {
     setLoading(true);
@@ -41,48 +47,43 @@ function ProfileEdit() {
     ).then((response) => {
       setLoading(false);
       let imageUrl = response.data.url
+      // console.log(imageUrl);
       setinsertImage(imageUrl)
     });
   };
-  console.log("outside",insertImage);
+  // console.log("outside",insertImage);
 
-  const onSubmit = async (name, city, zip, address, about, state, phone) => {
-    // console.log(name, city, zip, address, about, state);
+  const { register, handleSubmit, reset } = useForm();
+
+const onSubmit = async (name, city, zip, address, state, phone) => {
+  console.log(name, city, zip, address, state);
 
 
-    try {
-      const data = {
-        name: name,
-        email: email,
-        address: address,
-        phone: phone,
-        city: city,
-        state: state,
-        zip: zip,
-        about: about,
-        image : insertImage
-      };
-      const config = {
-        headers: {
-            Accept: 'application/json',
-            Authorization: user,
-            'Content-Type': 'application/json'
-        }
+  try {
+    const data = {
+      name: name,
+      email: email,
+      address: address,
+      phone: phone,
+      city: city,
+      state: state,
+      zip: zip,
+      image : insertImage
+      
     };
-      // console.log("onSubmit", data);
-      const response = await axiosContractorInstance
-        .patch("/editProfile", data, config)
-        .then((response) => {
-          setResult("Updated Succesfully");
-        });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    console.log("onSubmit", data);
+    const response = await axiosUserInstance
+      .patch("/profileEdit", data,config)
+      .then((response) => {
+        setResult("Updated Succesfully");
+      });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   return (
     <div>
-      <Navbar />
       <div className="min-h-screen p-3 bg-gray-100 flex items-center justify-center">
         <div className="container max-w-screen-lg mx-auto">
           <div>
@@ -94,7 +95,7 @@ function ProfileEdit() {
               <h2 className="font-semibold text-xl text-gray-600 mb-5 ">
                 Details
               </h2>
-            )}
+            )} 
 
             <div className="bg-white rounded shadow-lg p-4 px-4 md:p-8 ">
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
@@ -105,7 +106,7 @@ function ProfileEdit() {
                     <div class="relative w-24 h-24 ">
                       <img
                         class="rounded-full border border-gray-100 shadow-sm"
-                        src={cont.image}
+                        src={use.image}
                         alt="user image"
                       />
                       <div className="flex justify-center flex-wrap mt-5 ">
@@ -157,7 +158,7 @@ function ProfileEdit() {
                 <div className="lg:col-span-2">
                   <form
                     onSubmit={handleSubmit((data) =>
-                      onSubmit(name, city, zip, address, about, state, phone)
+                      onSubmit(name, city, zip, address, state, phone)
                     )}
                   >
                     <div className="grid gap-4 gap-y-2 text-sm  grid-cols-1 md:grid-cols-5">
@@ -171,7 +172,7 @@ function ProfileEdit() {
                           onChange={(e) => {
                             setName(e.target.value);
                           }}
-                          defaultValue={cont.name}
+                          defaultValue={use.name}
                         />
                       </div>
 
@@ -182,7 +183,8 @@ function ProfileEdit() {
                           name="email"
                           id="email"
                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          value={cont.email}
+                          value={use.email}
+                          // defaultValue={use.email}
                           onChange={(e) => {
                             setEmail(e.target.value);
                           }}
@@ -197,7 +199,7 @@ function ProfileEdit() {
                           name="address"
                           id="address"
                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          defaultValue={cont.address}
+                          defaultValue={use.address}
                           onChange={(e) => {
                             setAddress(e.target.value);
                           }}
@@ -211,25 +213,14 @@ function ProfileEdit() {
                           name="city"
                           id="city"
                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          defaultValue={cont.city}
+                          defaultValue={use.city}
                           onChange={(e) => {
                             setCity(e.target.value);
                           }}
                         />
                       </div>
 
-                      <div className="md:col-span-2">
-                        <label htmlFor="country">License No</label>
-                        <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                          <input
-                            name="country"
-                            id="country"
-                            placeholder=""
-                            className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                            value={cont.licenseNumber}
-                          />
-                        </div>
-                      </div>
+                     
 
                       <div className="md:col-span-2">
                         <label htmlFor="state">State / province</label>
@@ -239,7 +230,7 @@ function ProfileEdit() {
                             id="state"
                             placeholder="State"
                             className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                            defaultValue={cont.state}
+                            defaultValue={use.state}
                             onChange={(e) => {
                               setState(e.target.value);
                             }}
@@ -255,7 +246,7 @@ function ProfileEdit() {
                           id="zipcode"
                           className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                           placeholder=""
-                          defaultValue={cont.zipCode}
+                          defaultValue={use.zipCode}
                           onChange={(e) => {
                             setZip(e.target.value);
                           }}
@@ -270,7 +261,7 @@ function ProfileEdit() {
                             id="number"
                             placeholder="State"
                             className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
-                            defaultValue={cont.phoneNumber}
+                            defaultValue={use.phoneNumber}
                             onChange={(e) => {
                               setPhone(e.target.value);
                             }}
@@ -278,19 +269,7 @@ function ProfileEdit() {
                         </div>
                       </div>
 
-                      <div className="md:col-span-5">
-                        <label htmlFor="full_name">About</label>
-                        <input
-                          type="text"
-                          name="full_name"
-                          id="full_name"
-                          className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                          defaultValue={cont.about}
-                          onChange={(e) => {
-                            setAbout(e.target.value);
-                          }}
-                        />
-                      </div>
+                     
 
                       <div className="md:col-span-5 text-right">
                         <div className="inline-flex items-end">
@@ -315,7 +294,7 @@ function ProfileEdit() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ProfileEdit;
+export default ProfileEdit

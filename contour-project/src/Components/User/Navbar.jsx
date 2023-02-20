@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { clogo } from "../../assets/User/Exports";
 import { useNavigate, Link } from "react-router-dom";
-import { clearUserToken } from "../../Redux/authSlice";
+import { clearUserToken , clearUserAllDetails } from "../../Redux/authSlice";
 import { useDispatch } from "react-redux";
+import {toast} from 'react-toastify'
+
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
@@ -14,6 +16,8 @@ function Navbar() {
   function logout() {
     localStorage.removeItem("user");
     dispatch(clearUserToken())
+    dispatch(clearUserAllDetails())
+    toast.success("Logout Successfully")
     navigate("/");
   }
 
@@ -23,7 +27,7 @@ function Navbar() {
         <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
           <div>
             <div className="flex items-center justify-between py-3 md:py-5 md:block">
-              <a href="javascript:void(0)">
+              <a href="/">
                 {/* <h2 className="text-2xl font-bold">LOGO</h2> */}
                 <img className="w-60 h-10 " src={clogo} alt="" />
               </a>
@@ -81,9 +85,10 @@ function Navbar() {
                 <li className="text-gray-600 hover:text-blue-600">
                   <Link to="/designs">Designs</Link>
                 </li>
-                <li className="text-gray-600 hover:text-blue-600">
-                  <a href="javascript:void(0)">About US</a>
-                </li>
+                {token ? <li className="text-gray-600 hover:text-blue-600">
+                  <a href="/profile">Profile</a>
+                </li> : " " }
+                
                 {token ? (
                   <li
                     className="text-gray-600 hover:text-blue-600 cursor-pointer"

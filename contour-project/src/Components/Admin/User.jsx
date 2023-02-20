@@ -6,11 +6,20 @@ import DataTable from "react-data-table-component";
 function User() {
   const [user, setUser] = useState([]);
   const [action,setAction] = useState([])
+  const userT = localStorage.getItem('admin')
+
+  const config = {
+    headers: {
+        Accept: 'application/json',
+        Authorization: userT,
+        'Content-Type': 'application/json'
+    }
+};
 
   const getUsers = async () => {
     try {
       const response = await axiosAdminInstance
-        .get("/users")
+        .get("/users",config)
         .then((response) => {
           console.log(response.data);
           setUser(response.data);
@@ -22,7 +31,7 @@ function User() {
 
   const block = async (id) => {
     try{
-      const response = await axiosAdminInstance.patch("/userBlock" , {user : id})
+      const response = await axiosAdminInstance.patch("/userBlock" , {user : id},config)
       .then((resp)=>{
         setAction(resp.data);
       })
@@ -33,7 +42,7 @@ function User() {
 
   const unblock = async (id) => {
     try{
-      const response = await axiosAdminInstance.patch("/userUnBlock" , {user : id})
+      const response = await axiosAdminInstance.patch("/userUnBlock" , {user : id},config)
       .then((resp)=>{
         setAction(resp.data);
       })
@@ -61,6 +70,24 @@ function User() {
         return (
           <div>
             {row.blockStatus ? (
+              
+              <button
+              
+                onClick={()=>unblock(row._id)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+              >
+                Unblock
+              </button>
+
+          ) : (
+            <button
+              onClick={() => block(row._id)}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+            >   
+              Block
+            </button>
+          )}
+            {/* {row.blockStatus ? (
               
                 // <button
                 
@@ -103,7 +130,7 @@ function User() {
               >
                 Block
               </button>
-            )}
+            )} */}
           </div>
         );
       },

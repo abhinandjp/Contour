@@ -5,6 +5,7 @@ import { useLocation , useNavigate } from 'react-router-dom';
 
 function Contractor() {
 
+  const user = localStorage.getItem("user");
   const [profile, setProfile] = useState("")
 
   const navigate = useNavigate();
@@ -12,12 +13,20 @@ function Contractor() {
   let location = useLocation();
   // console.log(location.state);
 
+  const config = {
+    headers: {
+        Accept: 'application/json',
+        Authorization: user,
+        'Content-Type': 'application/json'
+    }
+};
+
   useEffect(() => {
     let profileId = location.state
     const fetchProfile = async () => {   
       
       const response = await axiosUserInstance
-        .post("/getContractor",{user : profileId})
+        .post("/getContractor",{user : profileId},config)
         
         .then((response) => {
           setProfile(response.data)
@@ -100,14 +109,14 @@ function Contractor() {
             </div>
 
             <div className='flex flex-row '>
-            <button
+            {/* <button
               type="submit"
             //   onClick={()=>addClick()}
               className="text-white  bg-green-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5  text-center dark:bg-green-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
             >
               
               Chat with Me
-            </button>
+            </button> */}
             <button
               type="submit"
             //   onClick={()=>addClick()}

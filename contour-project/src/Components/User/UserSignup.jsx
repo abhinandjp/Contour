@@ -24,9 +24,9 @@ const UserSignup = () => {
           const response = await axiosUserInstance
             .post("/signup", values)
             .then((response) => {
-              console.log(response);
+              // console.log(response);
               if (response.data.status === "registered") {
-                setValidation(response.data.msg);
+                navigate("/login");
                 action.resetForm();
               }
               if (response.data.status === "Existing") {

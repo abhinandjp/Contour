@@ -7,10 +7,20 @@ import DataTable from "react-data-table-component";
 function Contractor() {
     const [contractor, setContractor] = useState([]);
   const [action,setAction] = useState([])
+  const user = localStorage.getItem('admin')
+
+  const config = {
+    headers: {
+        Accept: 'application/json',
+        Authorization: user,
+        'Content-Type': 'application/json'
+    }
+};
+
   const getContractor = async () => {
     try {
       const response = await axiosAdminInstance
-        .get("/contractors")
+        .get("/contractors",config)
         .then((response) => {
           console.log(response.data);
           setContractor(response.data);
@@ -22,7 +32,7 @@ function Contractor() {
 
   const block = async (id) => {
     try{
-      const response = await axiosAdminInstance.patch("/contractorBlock" , {user : id})
+      const response = await axiosAdminInstance.patch("/contractorBlock" , {user : id},config)
       .then((resp)=>{
         setAction(resp.data);
       })
@@ -33,7 +43,7 @@ function Contractor() {
 
   const unblock = async (id) => {
     try{
-      const response = await axiosAdminInstance.patch("/contractorUnBlock" , {user : id})
+      const response = await axiosAdminInstance.patch("/contractorUnBlock" , {user : id},config)
       .then((resp)=>{
         setAction(resp.data);
       })

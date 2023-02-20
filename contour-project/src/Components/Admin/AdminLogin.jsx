@@ -4,6 +4,9 @@ import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import { UserLoginSchema } from "../../Schemas/UserLoginSchema";
 import { clogo } from "../../assets/User/Exports";
+import { useDispatch } from "react-redux";
+import { adminToken } from "../../Redux/authSlice";
+
 
 const initialValues = {
   email: "",
@@ -13,6 +16,8 @@ const initialValues = {
 function AdminLogin() {
   const [validation, setValidation] = useState("");
   let navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -34,6 +39,8 @@ function AdminLogin() {
                 action.resetForm();
               } else {
                 localStorage.setItem("admin", response.data.admin);
+                let adminTok = response.data.admin
+                dispatch(adminToken(adminTok))
                 navigate("/adminUser");
               }
             });

@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   userAllDetails:'',
   userToken:'',
   contractorToken:'',
+  adminToken : ''
 };
 
 
@@ -49,6 +50,16 @@ const loginSlice = createSlice({
         adminDetails = false;
         return { ...state, adminDetails };
       },
+      userAllDetails:(state,action)=>{
+        let { userAllDetails } = state;
+        userAllDetails=action.payload;
+        return {...state,userAllDetails}
+      },
+      clearUserAllDetails: (state, action) => {
+        let { userAllDetails } = state;
+        userAllDetails = false;
+        return { ...state, userAllDetails };
+      },
       contractorAllDetails:(state,action)=>{
         let { contractorAllDetails } = state;
         contractorAllDetails=action.payload;
@@ -68,8 +79,12 @@ const loginSlice = createSlice({
       contractorToken:(state,action)=>{
         let {contractorToken}=state;
         contractorToken=action.payload
-        console.log("funda",action.payload);
         return {...state,contractorToken}
+      },
+      adminToken:(state,action)=>{
+        let {adminToken}=state;
+        adminToken=action.payload
+        return {...state,adminToken}
       },
       clearUserToken:(state,action)=>{
         let{userToken}=state;
@@ -80,6 +95,11 @@ const loginSlice = createSlice({
         let{contractorToken}=state;
         contractorToken=false;
         return{...state,contractorToken}
+      }, 
+      clearAdminToken:(state,action)=>{
+        let{adminToken}=state;
+        adminToken=false;
+        return{...state,adminToken}
       }, 
     },
   });
@@ -95,6 +115,8 @@ const loginSlice = createSlice({
     clearUserAllDetails,
     userToken,
     clearUserToken,
+    adminToken,
+    clearAdminToken,
     categoryDetails,
     contractorToken,
     clearContractorToken,

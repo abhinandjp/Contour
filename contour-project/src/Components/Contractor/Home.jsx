@@ -11,6 +11,8 @@ import jwt_decode from "jwt-decode";
 function Home() {
   const [contractor, setContractor] = useState([]);
   let cToken = localStorage.getItem("contractor");
+  const user = localStorage.getItem("contractor");
+
  
   const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -18,18 +20,26 @@ function Home() {
 
 
   const getContractor = async () => {
-    const user = jwt_decode(cToken);
+    // const user = jwt_decode(cToken);
     // console.log("userrrr", user);
     // console.log(user.email);
 
-    const data = {
-      user: user.email,
-    };
+    // const data = {
+    //   user: user.email,
+    // };
+
+    const config = {
+      headers: {
+          Accept: 'application/json',
+          Authorization: user,
+          'Content-Type': 'application/json'
+      }
+  };
 
     try {
       const response = await axiosContractorInstance.post(
         "/getContractor",
-        data
+        {data: ''}, config
       )
       .then((response) => {
         // console.log(response.data);

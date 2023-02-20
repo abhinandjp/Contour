@@ -36,7 +36,7 @@ function Login() {
                 
                 localStorage.setItem("contractor", response.data.contractor);
                 let contToken = response.data.contractor
-                console.log("Nagesh",contToken);
+                // console.log("Nagesh",contToken);
                 dispatch(contractorToken(contToken))
 
                 navigate("/contractorHome");

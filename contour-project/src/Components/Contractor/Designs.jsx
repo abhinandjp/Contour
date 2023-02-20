@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useAsyncError } from "react-router-dom";
 import { axiosContractorInstance } from "../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
+import {toast} from 'react-toastify'
 
 
 import {
@@ -17,6 +18,8 @@ function Designs() {
   const [designs, setDesigns] = useState([])
   const [loading, setLoading] = useState(true)
   const [deleted , setDeleted] = useState(false)
+  const user = localStorage.getItem("user");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,18 +36,27 @@ function Designs() {
     fetchDesigns();
   }, [deleted]);
 
+  const config = {
+    headers: {
+        Accept: 'application/json',
+        Authorization: user,
+        'Content-Type': 'application/json'
+    }
+};
+
   const editClick = async (element)=>{    
     navigate("/editDesigns", { state: element });
   }
 
   const deleteClick = async (id)=>{    
-    const response = await axiosContractorInstance.post("/deleteDesign" , {id : id})
+    const response = await axiosContractorInstance.post("/deleteDesign" , {id : id},config)
     .then((response)=>{
+      toast.success("Design Deleted Succesfully")
       setDeleted(response.data.deleteDesgn)
     })
   }
   // console.log(deleted);
-  // console.log(designs);
+  console.log(designs);
   // console.log(designs[0]);
 
   return (
@@ -84,11 +96,16 @@ function Designs() {
           <div className="flex-1 h-full max-w-4xl mx-auto bg-white rounded-lg shadow-xl">
             <div className="flex flex-col md:flex-row">
               <div className="h-32 md:h-auto md:w-1/2  ">
-                <img
+                 {element.image1 ?<img
+                  className="object-contain w-full h-full "
+                  src={element.image1}
+                  alt="img"
+                /> :<img
                   className="object-contain w-full h-full "
                   src={cKLH1}
                   alt="img"
-                />
+                />}
+                
               </div>
 
               <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2 ">

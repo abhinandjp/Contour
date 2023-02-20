@@ -21,6 +21,24 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    address : {
+      type : String
+    },
+    city : {
+      type : String
+    },
+    state :{
+      type : String
+    },
+    zipCode : {
+      type :Number
+    },
+    image : {
+      type : String
+    },
+    payment : {
+      type : Boolean
+    },
     blockStatus : {
       type : Boolean
     }

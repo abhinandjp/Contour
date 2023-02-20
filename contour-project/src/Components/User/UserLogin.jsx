@@ -5,7 +5,8 @@ import { useNavigate , Link } from "react-router-dom";
 import { UserLoginSchema } from "../../Schemas/UserLoginSchema";
 import { clogo } from "../../assets/User/Exports";
 import { useDispatch } from "react-redux";
-import { userToken } from "../../Redux/authSlice";
+import { userToken , userAllDetails } from "../../Redux/authSlice";
+import {toast} from 'react-toastify'
 
 
 
@@ -28,6 +29,7 @@ const UserLogin = () => {
             .post("/login", values)
 
             .then((response) => {
+              console.log(response);
               if (response.data.status === "noUser") {
                 setValidation(response.data.data);
 
@@ -43,12 +45,18 @@ const UserLogin = () => {
               } else {
                 localStorage.setItem("user", response.data.user);
                 let token = response.data.user
+                let userDetails = response.data.userDetails
+                console.log(userDetails);
                 dispatch(userToken(token))
+                dispatch(userAllDetails(userDetails))
+                toast.success("Logined Succesfully")
+
                 navigate("/");
               }
             });
         } catch (err) {
           console.log(err.message);
+          toast.error(err.message)
         }
       },
     });
